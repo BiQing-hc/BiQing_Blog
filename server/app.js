@@ -15,6 +15,18 @@ const { db, genid } = require("./db/DbUtils");
 // 端口号 8080
 const port = 8080;
 // 中间件解决跨域问题
+const update = multer({
+  dest: "./public/upload/temp",
+});
+const bodyParser = require("body-parser");
+app.use(
+  bodyParser.urlencoded({
+    extended: false,
+  })
+);
+// 解析 application/json
+app.use(bodyParser.json());
+
 app.use(function (req, res, next) {
   //设置允许跨域的域名，*代表允许任意域名跨域
   res.header("Access-Control-Allow-Origin", "*");
@@ -26,15 +38,11 @@ app.use(function (req, res, next) {
   else next();
 });
 
-const update = multer({
-  dest: "./public/upload/temp",
-});
+// 解析express文件
+app.use(express.json());
 app.use(update.any());
 // 拼接地址
 app.use(express.static(path.join(__dirname, "./public")));
-
-// 解析express文件
-app.use(express.json());
 
 //category/_token/add
 const ADMIN_TOKEN_PATH = "/_token";

@@ -56,7 +56,6 @@ router.get("/search", async (req, res) => {
 // 删除博客的接口
 router.delete("/_token/delete", async (req, res) => {
   let article_id = req.query.article_id;
-  console.log(article_id);
   const delete_sql = "DELETE FROM `articles` WHERE `article_id` = ?";
   let { err, rows } = await db.async.all(delete_sql, [article_id]);
   if (err == null) {
